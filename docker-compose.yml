@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  web:
+    image: votre_nom_image:votre_tag
+    deploy:
+      replicas: 1
+    ports:
+      - "5000:5000"
+    secrets:
+      - db_host
+      - db_user
+      - db_password
+      - db_name
+
+  db:
+    image: mariadb:latest
+    deploy:
+      replicas: 1
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    secrets:
+      - db_root_password
+
+secrets:
+  db_host:
+    external: true
+  db_user:
+    external: true
+  db_password:
+    external: true
+  db_name:
+    external: true
+  db_root_password:
+    external: true
